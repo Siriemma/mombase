@@ -997,7 +997,7 @@ function RecipesSection({data,update}) {
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",gap:14}}>
         {filtered.map(r=>(
           <Card key={r.id} onClick={()=>setSel(r.id)} style={{cursor:"pointer"}}>
-            <div style={{fontSize:40,marginBottom:10}}>{_EM.PLATE}️</div>
+            <div style={{fontSize:40,marginBottom:10}}>{_EM.PLATE}</div>
             <h4 style={{margin:"0 0 6px",fontFamily:AF,color:p.text}}>{r.title}</h4>
             {r.time&&<div style={{fontSize:12,color:p.muted,marginBottom:8,fontFamily:FF}}>⏱ {r.time}</div>}
             {r.link&&<div style={{fontSize:11,color:p.a2,marginBottom:8,fontFamily:FF}}>{_EM.LINK} Has source link</div>}
@@ -1071,7 +1071,7 @@ function FilesSection({data,update}) {
             ) : f.dataUrl&&f.type==="file" ? (
               <div style={{fontSize:40,marginBottom:8}}>{_EM.DOC}</div>
             ) : (
-              <div style={{fontSize:44,marginBottom:10}}>{f.type==="photo"?"" + _EM.PHOTOFRAME + "️":"" + _EM.DOC + ""}</div>
+              <div style={{fontSize:44,marginBottom:10}}>{f.type==="photo"?"" + _EM.PHOTOFRAME + "":"" + _EM.DOC + ""}</div>
             )}
             <div style={{fontWeight:700,fontSize:12,marginBottom:6,wordBreak:"break-word",fontFamily:FF}}>{f.name}</div>
             {f.tag&&<TagBadge>{f.tag}</TagBadge>}
@@ -1112,7 +1112,7 @@ function FilesSection({data,update}) {
           <div style={{display:"flex",gap:8}}>
             {["file","photo"].map(t=>(
               <div key={t} onClick={()=>setForm(f=>({...f,type:t}))} style={{flex:1,padding:10,borderRadius:10,cursor:"pointer",textAlign:"center",fontWeight:700,fontFamily:FF,background:form.type===t?p.a1:p.tag,color:form.type===t?"#fff":p.muted}}>
-                {t==="file"?"" + _EM.DOC + " File":"" + _EM.PHOTOFRAME + "️ Photo"}
+                {t==="file"?"" + _EM.DOC + " File":"" + _EM.PHOTOFRAME + " Photo"}
               </div>
             ))}
           </div>
