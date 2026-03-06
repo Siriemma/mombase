@@ -1,38 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-/* ── Encoding-safe emoji ── */
-const _EM = {
-  FLOWER: String.fromCodePoint(0x1f338),
-  HOUSE: String.fromCodePoint(0x1f3e1),
-  CALENDAR: String.fromCodePoint(0x1f4c5),
-  ALARM: String.fromCodePoint(0x23f0),
-  NOTES: String.fromCodePoint(0x1f4dd),
-  COOKING: String.fromCodePoint(0x1f373),
-  FOLDER: String.fromCodePoint(0x1f4c1),
-  MAPPIN: String.fromCodePoint(0x1f4cd),
-  MONEY: String.fromCodePoint(0x1f4b8),
-  HEART: String.fromCodePoint(0x1f49b),
-  LINK: String.fromCodePoint(0x1f517),
-  CAMERA: String.fromCodePoint(0x1f4f7),
-  PLATE: String.fromCodePoint(0x1f37d),
-  MAP: String.fromCodePoint(0x1f5fa),
-  PHONE: String.fromCodePoint(0x1f4de),
-  PUSHPIN: String.fromCodePoint(0x1f4cc),
-  BELL: String.fromCodePoint(0x1f514),
-  PARTY: String.fromCodePoint(0x1f389),
-  SPARKLE: String.fromCodePoint(0x2728),
-  EMAIL: String.fromCodePoint(0x1f4e7),
-  APPLE: String.fromCodePoint(0x1f34e),
-  PLAY: String.fromCodePoint(0x25b6),
-  DOWN: String.fromCodePoint(0x2b07),
-  UPARROW: String.fromCodePoint(0x2197),
-  DOC: String.fromCodePoint(0x1f4c4),
-  PHOTOFRAME: String.fromCodePoint(0x1f5bc),
-  PENCIL: String.fromCodePoint(0x270f),
-  LEAF: String.fromCodePoint(0x1f33f),
-};
-
-
 /* ── Google Font ── */
 const fontLink = document.createElement("link");
 fontLink.href = "https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap";
@@ -59,7 +26,7 @@ const p = {
 };
 
 const SECTIONS = ["Dashboard","Calendar","Alarms","Notes","Recipes","Files","Locations","Bills"];
-const ICONS    = {Dashboard:"" + _EM.HOUSE + "",Calendar:"" + _EM.CALENDAR + "",Alarms:"" + _EM.ALARM + "",Notes:"" + _EM.NOTES + "",Recipes:"" + _EM.COOKING + "",Files:"" + _EM.FOLDER + "",Locations:"" + _EM.MAPPIN + "",Bills:"" + _EM.MONEY + ""};
+const ICONS    = {Dashboard:"\uD83C\uDFE1",Calendar:"\uD83D\uDCC5",Alarms:"\u23F0",Notes:"\uD83D\uDCDD",Recipes:"\uD83C\uDF73",Files:"\uD83D\uDCC1",Locations:"\uD83D\uDCCD",Bills:"\uD83D\uDCB8"};
 const DAYS     = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const MONTHS   = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const NOTE_COLORS = ["#fff8e1","#fce4ec","#e8f5e9","#e3f2fd","#f3e5f5","#fff3e0"];
@@ -112,7 +79,7 @@ const DEFAULT_DATA = {
   ],
   notes: [
     {id:1,title:"School supply list",content:"Glue sticks, markers, composition notebook, scissors",color:"#fff8e1",pinned:true,date:"2026-02-28",folder:"School",photos:[],links:[]},
-    {id:2,title:"Self-care reminder",content:"You are doing amazing. Rest is productive. " + _EM.SPARKLE + "",color:"#fce4ec",pinned:true,date:"2026-03-01",folder:"Personal",photos:[],links:[]},
+    {id:2,title:"Self-care reminder",content:"You are doing amazing. Rest is productive. \u2728",color:"#fce4ec",pinned:true,date:"2026-03-01",folder:"Personal",photos:[],links:[]},
   ],
   noteFolders: ["Personal","School","Household","Health"],
   recipes: [
@@ -165,7 +132,7 @@ function useAlarmTicker(alarms) {
         fired.current.add(key);
         playChime(a.sound || "chime1");
         if (Notification.permission === "granted") {
-          new Notification("MomBase " + _EM.ALARM + "", { body: a.label });
+          new Notification("MomBase \u23F0", { body: a.label });
         }
       });
     }, 10000);
@@ -278,7 +245,7 @@ function Dashboard({data}) {
   return (
     <div>
       <div style={{marginBottom:28}}>
-        <h1 style={{fontFamily:AF,margin:0,color:p.a1,fontSize:36}}>{greeting} {_EM.FLOWER}</h1>
+        <h1 style={{fontFamily:AF,margin:0,color:p.a1,fontSize:36}}>{greeting} \uD83C\uDF38</h1>
         <p style={{margin:"6px 0 0",color:p.muted,fontFamily:FF,fontSize:15}}>
           {today.toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"})}
         </p>
@@ -286,10 +253,10 @@ function Dashboard({data}) {
 
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(145px,1fr))",gap:14,marginBottom:28}}>
         {[
-          {l:"Today's Events",v:te.length,i:"" + _EM.CALENDAR + "",bg:`${p.a1}15`},
-          {l:"Unpaid Bills",  v:ub.length,i:"" + _EM.MONEY + "",bg:`${p.a2}15`},
-          {l:"Alarms Today",  v:aa.length,i:"" + _EM.ALARM + "",bg:`${p.a3}30`},
-          {l:"Pinned Notes",  v:pn.length,i:"" + _EM.PUSHPIN + "",bg:`${p.gold}20`},
+          {l:"Today's Events",v:te.length,i:"\uD83D\uDCC5",bg:`${p.a1}15`},
+          {l:"Unpaid Bills",  v:ub.length,i:"\uD83D\uDCB8",bg:`${p.a2}15`},
+          {l:"Alarms Today",  v:aa.length,i:"\u23F0",bg:`${p.a3}30`},
+          {l:"Pinned Notes",  v:pn.length,i:"\uD83D\uDCCC",bg:`${p.gold}20`},
         ].map(s=>(
           <Card key={s.l} style={{background:s.bg,textAlign:"center",padding:"18px 10px",border:"none"}}>
             <div style={{fontSize:26}}>{s.i}</div>
@@ -301,18 +268,18 @@ function Dashboard({data}) {
 
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:16}}>
         <Card>
-          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>{_EM.CALENDAR} Today's Schedule</div>
+          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>\uD83D\uDCC5 Today's Schedule</div>
           {te.length ? te.map(e=>(
             <div key={e.id} style={{display:"flex",gap:10,alignItems:"center",marginBottom:8}}>
               <div style={{width:10,height:10,borderRadius:"50%",background:e.color,flexShrink:0}}/>
               <b style={{fontSize:14,fontFamily:FF}}>{e.time}</b>
               <span style={{fontSize:14,color:p.muted}}>{e.title}</span>
             </div>
-          )) : <p style={{color:p.muted,fontSize:13,margin:0,fontStyle:"italic"}}>Free day — enjoy it! {_EM.PARTY}</p>}
+          )) : <p style={{color:p.muted,fontSize:13,margin:0,fontStyle:"italic"}}>Free day — enjoy it! \uD83C\uDF89</p>}
         </Card>
 
         <Card>
-          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>{_EM.ALARM} Alarms Today</div>
+          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>\u23F0 Alarms Today</div>
           {aa.length ? aa.map(a=>(
             <div key={a.id} style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
               <span style={{fontSize:14}}>{a.label}</span>
@@ -322,18 +289,18 @@ function Dashboard({data}) {
         </Card>
 
         <Card>
-          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>{_EM.MONEY} Bills to Pay</div>
+          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>\uD83D\uDCB8 Bills to Pay</div>
           {ub.slice(0,4).map(b=>(
             <div key={b.id} style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
               <span style={{fontSize:14}}>{b.name}</span>
               <b style={{fontSize:14,color:p.danger}}>${b.amount} · Day {b.due}</b>
             </div>
           ))}
-          {!ub.length&&<p style={{color:p.muted,fontSize:13,margin:0,fontStyle:"italic"}}>All bills paid! {_EM.PARTY}</p>}
+          {!ub.length&&<p style={{color:p.muted,fontSize:13,margin:0,fontStyle:"italic"}}>All bills paid! \uD83C\uDF89</p>}
         </Card>
 
         <Card>
-          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>{_EM.PUSHPIN} Pinned Notes</div>
+          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>\uD83D\uDCCC Pinned Notes</div>
           {pn.slice(0,3).map(n=>(
             <div key={n.id} style={{background:n.color,borderRadius:10,padding:"8px 12px",marginBottom:8}}>
               <b style={{fontSize:13}}>{n.title}</b>
@@ -407,7 +374,7 @@ function CalendarSection({data,update}) {
     <div>
       {/* Header */}
       <div style={{display:"flex",flexWrap:"wrap",gap:10,justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
-        <SectionTitle>{_EM.CALENDAR} Calendar</SectionTitle>
+        <SectionTitle>\uD83D\uDCC5 Calendar</SectionTitle>
         <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
           {["month","week","list"].map(v=>(
             <Pill key={v} active={view===v} onClick={()=>setView(v)}>{v.charAt(0).toUpperCase()+v.slice(1)}</Pill>
@@ -418,18 +385,18 @@ function CalendarSection({data,update}) {
 
       {/* Connect banners */}
       <Card style={{marginBottom:16,background:`${p.soft}`,border:`1px dashed ${p.a3}`,padding:"12px 16px"}}>
-        <div style={{fontSize:12,fontWeight:700,color:p.a1,marginBottom:8,fontFamily:AF}}>{_EM.LINK} Connect Your Calendars</div>
+        <div style={{fontSize:12,fontWeight:700,color:p.a1,marginBottom:8,fontFamily:AF}}>\uD83D\uDD17 Connect Your Calendars</div>
         <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
           {[
-            {name:"Google Calendar",url:GOOGLE_CAL,color:"#4285F4",icon:"" + _EM.CALENDAR + ""},
-            {name:"Outlook",url:OUTLOOK_CAL,color:"#0078D4",icon:"" + _EM.EMAIL + ""},
-            {name:"Apple Calendar",url:"https://www.icloud.com/calendar",color:"#555",icon:"" + _EM.APPLE + ""},
+            {name:"Google Calendar",url:GOOGLE_CAL,color:"#4285F4",icon:"\uD83D\uDCC5"},
+            {name:"Outlook",url:OUTLOOK_CAL,color:"#0078D4",icon:"\uD83D\uDCE7"},
+            {name:"Apple Calendar",url:"https://www.icloud.com/calendar",color:"#555",icon:"\uD83C\uDF4E"},
           ].map(cal=>(
             <a key={cal.name} href={cal.url} target="_blank" rel="noreferrer" style={{
               display:"inline-flex",alignItems:"center",gap:6,padding:"6px 14px",
               borderRadius:20,background:cal.color,color:"#fff",fontSize:12,
               fontWeight:700,textDecoration:"none",fontFamily:FF
-            }}>{cal.icon} {cal.name} {_EM.UPARROW}</a>
+            }}>{cal.icon} {cal.name} \u2197</a>
           ))}
         </div>
         <p style={{fontSize:11,color:p.muted,margin:"8px 0 0",fontFamily:FF}}>
@@ -495,7 +462,7 @@ function CalendarSection({data,update}) {
                 <div style={{width:12,height:12,borderRadius:"50%",background:e.color,flexShrink:0}}/>
                 <div>
                   <b style={{fontFamily:FF}}>{e.title}</b>
-                  <div style={{fontSize:12,color:p.muted}}>{e.date}{e.time?` · ${e.time}`:""}{e.location?` · " + _EM.MAPPIN + "${e.location}`:""}</div>
+                  <div style={{fontSize:12,color:p.muted}}>{e.date}{e.time?` · ${e.time}`:""}{e.location?` · \uD83D\uDCCD${e.location}`:""}</div>
                   {e.desc&&<div style={{fontSize:12,color:p.muted,fontStyle:"italic"}}>{e.desc}</div>}
                 </div>
               </div>
@@ -559,7 +526,7 @@ function CalendarSection({data,update}) {
                 <div>
                   <b style={{fontSize:14}}>{e.title}</b>
                   {e.time&&<span style={{fontSize:12,color:p.muted,marginLeft:8}}>{e.time}{e.endTime?` – ${e.endTime}`:""}</span>}
-                  {e.location&&<div style={{fontSize:12,color:p.muted}}>{_EM.MAPPIN} {e.location}</div>}
+                  {e.location&&<div style={{fontSize:12,color:p.muted}}>\uD83D\uDCCD {e.location}</div>}
                   {e.desc&&<div style={{fontSize:12,color:p.muted,fontStyle:"italic"}}>{e.desc}</div>}
                 </div>
               </div>
@@ -627,14 +594,14 @@ function AlarmsSection({data,update}) {
   return (
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
-        <SectionTitle>{_EM.ALARM} Alarms & Reminders</SectionTitle>
+        <SectionTitle>\u23F0 Alarms & Reminders</SectionTitle>
         <Btn onClick={()=>setModal(true)}>+ New Alarm</Btn>
       </div>
 
       {Notification.permission!=="granted"&&!permAsked&&(
         <Card style={{marginBottom:16,background:`${p.a3}25`,border:`1px dashed ${p.a3}`,padding:"12px 16px"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <span style={{fontSize:13,color:p.a1,fontFamily:FF}}>{_EM.BELL} Enable notifications so alarms can alert you even when you're not looking at the screen</span>
+            <span style={{fontSize:13,color:p.a1,fontFamily:FF}}>\uD83D\uDD14 Enable notifications so alarms can alert you even when you're not looking at the screen</span>
             <Btn small onClick={requestPerm}>Enable</Btn>
           </div>
         </Card>
@@ -646,7 +613,7 @@ function AlarmsSection({data,update}) {
             <div>
               <div style={{fontSize:34,fontWeight:700,fontFamily:AF,color:a.active?p.a1:p.muted,letterSpacing:1}}>{a.time}</div>
               <b style={{display:"block",marginBottom:6,fontFamily:FF}}>{a.label}</b>
-              <div style={{fontSize:11,color:p.muted,marginBottom:8}}>{_EM.BELL} {ALARM_SOUNDS.find(s=>s.id===a.sound)?.label||"Gentle Chime"}</div>
+              <div style={{fontSize:11,color:p.muted,marginBottom:8}}>\uD83D\uDD14 {ALARM_SOUNDS.find(s=>s.id===a.sound)?.label||"Gentle Chime"}</div>
               <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
                 {DAYS.map(d=>(
                   <span key={d} style={{fontSize:10,padding:"2px 8px",borderRadius:20,fontWeight:700,fontFamily:FF,background:a.days.includes(d)?p.a1:p.tag,color:a.days.includes(d)?"#fff":p.muted}}>{d}</span>
@@ -654,7 +621,7 @@ function AlarmsSection({data,update}) {
               </div>
             </div>
             <div style={{display:"flex",gap:10,alignItems:"center"}}>
-              <button onClick={()=>playChime(a.sound||"chime1")} style={{background:"none",border:`1px solid ${p.border}`,borderRadius:8,padding:"4px 10px",cursor:"pointer",fontSize:13,color:p.muted,fontFamily:FF}}>{_EM.PLAY} Test</button>
+              <button onClick={()=>playChime(a.sound||"chime1")} style={{background:"none",border:`1px solid ${p.border}`,borderRadius:8,padding:"4px 10px",cursor:"pointer",fontSize:13,color:p.muted,fontFamily:FF}}>\u25B6 Test</button>
               {/* Toggle */}
               <div onClick={()=>update("alarms",data.alarms.map(x=>x.id===a.id?{...x,active:!x.active}:x))} style={{width:52,height:28,borderRadius:14,background:a.active?p.a1:p.border,cursor:"pointer",position:"relative",transition:"background .2s",flexShrink:0}}>
                 <div style={{position:"absolute",top:4,left:a.active?28:4,width:20,height:20,borderRadius:"50%",background:"#fff",transition:"left .2s",boxShadow:"0 1px 4px rgba(0,0,0,.2)"}}/>
@@ -684,7 +651,7 @@ function AlarmsSection({data,update}) {
                 <div key={s.id} style={{display:"flex",alignItems:"center",gap:10}}>
                   <div onClick={()=>setForm(f=>({...f,sound:s.id}))} style={{width:18,height:18,borderRadius:"50%",border:`2px solid ${p.a1}`,background:form.sound===s.id?p.a1:"transparent",cursor:"pointer",flexShrink:0}}/>
                   <span style={{fontSize:13,fontFamily:FF,flex:1}}>{s.label}</span>
-                  <button onClick={()=>playChime(s.id)} style={{background:"none",border:`1px solid ${p.border}`,borderRadius:6,padding:"3px 8px",cursor:"pointer",fontSize:12,color:p.muted,fontFamily:FF}}>{_EM.PLAY}</button>
+                  <button onClick={()=>playChime(s.id)} style={{background:"none",border:`1px solid ${p.border}`,borderRadius:6,padding:"3px 8px",cursor:"pointer",fontSize:12,color:p.muted,fontFamily:FF}}>\u25B6</button>
                 </div>
               ))}
             </div>
@@ -775,8 +742,8 @@ function NotesSection({data,update}) {
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
           <b style={{fontSize:14,fontFamily:FF,flex:1,paddingRight:8}}>{note.title}</b>
           <div style={{display:"flex",gap:4,flexShrink:0}}>
-            {note.folder&&<span style={{fontSize:10,background:"rgba(0,0,0,.08)",borderRadius:10,padding:"2px 6px",fontFamily:FF,color:p.muted}}>{_EM.FOLDER}{note.folder}</span>}
-            <button onClick={()=>update("notes",data.notes.map(n=>n.id===note.id?{...n,pinned:!n.pinned}:n))} style={{background:"none",border:"none",cursor:"pointer",fontSize:14}}>{note.pinned?"" + _EM.PUSHPIN + "":"" + _EM.MAPPIN + ""}</button>
+            {note.folder&&<span style={{fontSize:10,background:"rgba(0,0,0,.08)",borderRadius:10,padding:"2px 6px",fontFamily:FF,color:p.muted}}>\uD83D\uDCC1{note.folder}</span>}
+            <button onClick={()=>update("notes",data.notes.map(n=>n.id===note.id?{...n,pinned:!n.pinned}:n))} style={{background:"none",border:"none",cursor:"pointer",fontSize:14}}>{note.pinned?"\uD83D\uDCCC":"\uD83D\uDCCD"}</button>
             <button onClick={()=>update("notes",data.notes.filter(n=>n.id!==note.id))} style={{background:"none",border:"none",cursor:"pointer",fontSize:14,color:p.muted}}>✕</button>
           </div>
         </div>
@@ -809,7 +776,7 @@ function NotesSection({data,update}) {
           <div style={{display:"flex",flexDirection:"column",gap:4}}>
             {note.links.map((lk,i)=>(
               <div key={i} style={{display:"flex",alignItems:"center",gap:6}}>
-                <a href={lk.startsWith("http")?lk:`https://${lk}`} target="_blank" rel="noreferrer" style={{fontSize:12,color:p.a2,textDecoration:"none",flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{_EM.LINK} {lk}</a>
+                <a href={lk.startsWith("http")?lk:`https://${lk}`} target="_blank" rel="noreferrer" style={{fontSize:12,color:p.a2,textDecoration:"none",flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>\uD83D\uDD17 {lk}</a>
                 <button onClick={()=>update("notes",data.notes.map(n=>n.id===note.id?{...n,links:n.links.filter((_,j)=>j!==i)}:n))} style={{background:"none",border:"none",cursor:"pointer",color:p.muted,fontSize:12}}>✕</button>
               </div>
             ))}
@@ -818,9 +785,9 @@ function NotesSection({data,update}) {
 
         {/* Action bar */}
         <div style={{display:"flex",gap:6,flexWrap:"wrap",borderTop:`1px solid rgba(0,0,0,.06)`,paddingTop:8}}>
-          <button onClick={()=>notePhotoRef.current?.click()} style={{background:"rgba(255,255,255,.6)",border:`1px solid ${p.border}`,borderRadius:6,padding:"3px 8px",cursor:"pointer",fontSize:11,color:p.muted,fontFamily:FF}}>{_EM.CAMERA} Photo</button>
+          <button onClick={()=>notePhotoRef.current?.click()} style={{background:"rgba(255,255,255,.6)",border:`1px solid ${p.border}`,borderRadius:6,padding:"3px 8px",cursor:"pointer",fontSize:11,color:p.muted,fontFamily:FF}}>\uD83D\uDCF7 Photo</button>
           <input ref={notePhotoRef} type="file" accept="image/*" style={{display:"none"}} onChange={addNotePhoto}/>
-          <button onClick={()=>setAddingLink(a=>!a)} style={{background:"rgba(255,255,255,.6)",border:`1px solid ${p.border}`,borderRadius:6,padding:"3px 8px",cursor:"pointer",fontSize:11,color:p.muted,fontFamily:FF}}>{_EM.LINK} Link</button>
+          <button onClick={()=>setAddingLink(a=>!a)} style={{background:"rgba(255,255,255,.6)",border:`1px solid ${p.border}`,borderRadius:6,padding:"3px 8px",cursor:"pointer",fontSize:11,color:p.muted,fontFamily:FF}}>\uD83D\uDD17 Link</button>
         </div>
 
         {addingLink&&(
@@ -838,14 +805,14 @@ function NotesSection({data,update}) {
   return (
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-        <SectionTitle>{_EM.NOTES} Notes</SectionTitle>
+        <SectionTitle>\uD83D\uDCDD Notes</SectionTitle>
         <div style={{display:"flex",gap:8}}>
-          <Btn small variant="soft" onClick={()=>setFolderModal(true)}>{_EM.FOLDER} Folders</Btn>
+          <Btn small variant="soft" onClick={()=>setFolderModal(true)}>\uD83D\uDCC1 Folders</Btn>
           <Btn small onClick={()=>setModal(true)}>+ Note</Btn>
         </div>
       </div>
 
-      <Inp placeholder={String.fromCodePoint(0x1F50D)+" Search notes…"} value={search} onChange={e=>setSearch(e.target.value)} style={{marginBottom:14}}/>
+      <Inp placeholder="\uD83D\uDD0D Search notes…" value={search} onChange={e=>setSearch(e.target.value)} style={{marginBottom:14}}/>
 
       {/* Folder tabs */}
       <div style={{display:"flex",gap:8,marginBottom:20,flexWrap:"wrap"}}>
@@ -853,7 +820,7 @@ function NotesSection({data,update}) {
       </div>
 
       {pinned.length>0&&<>
-        <div style={{fontSize:11,fontWeight:700,color:p.muted,marginBottom:8,textTransform:"uppercase",letterSpacing:1,fontFamily:FF}}>{_EM.PUSHPIN} Pinned</div>
+        <div style={{fontSize:11,fontWeight:700,color:p.muted,marginBottom:8,textTransform:"uppercase",letterSpacing:1,fontFamily:FF}}>\uD83D\uDCCC Pinned</div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",gap:12,marginBottom:20}}>
           {pinned.map(n=><NoteCard key={n.id} note={n}/>)}
         </div>
@@ -872,7 +839,7 @@ function NotesSection({data,update}) {
           <TA placeholder="Write your note…" value={form.content} onChange={e=>setForm(f=>({...f,content:e.target.value}))} style={{minHeight:120}}/>
 
           <Sel value={form.folder||""} onChange={e=>setForm(f=>({...f,folder:e.target.value}))}>
-            <option value="">{_EM.FOLDER} No folder</option>
+            <option value="">\uD83D\uDCC1 No folder</option>
             {(data.noteFolders||[]).map(f=><option key={f} value={f}>{f}</option>)}
           </Sel>
 
@@ -901,7 +868,7 @@ function NotesSection({data,update}) {
             <div style={{fontSize:13,color:p.muted,marginBottom:6,fontFamily:FF}}>Links:</div>
             {(form.links||[]).map((lk,i)=>(
               <div key={i} style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
-                <span style={{fontSize:12,color:p.a2,flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{_EM.LINK} {lk}</span>
+                <span style={{fontSize:12,color:p.a2,flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>\uD83D\uDD17 {lk}</span>
                 <button onClick={()=>setForm(f=>({...f,links:f.links.filter((_,j)=>j!==i)}))} style={{background:"none",border:"none",cursor:"pointer",color:p.muted}}>✕</button>
               </div>
             ))}
@@ -913,7 +880,7 @@ function NotesSection({data,update}) {
 
           <label style={{display:"flex",gap:8,alignItems:"center",cursor:"pointer",fontSize:14,fontFamily:FF}}>
             <input type="checkbox" checked={form.pinned} onChange={e=>setForm(f=>({...f,pinned:e.target.checked}))}/>
-            {_EM.PUSHPIN} Pin this note
+            \uD83D\uDCCC Pin this note
           </label>
           <Btn onClick={add}>Save Note</Btn>
         </FormCol>
@@ -925,7 +892,7 @@ function NotesSection({data,update}) {
           <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:8}}>
             {(data.noteFolders||[]).map(f=>(
               <div key={f} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 12px",background:p.soft,borderRadius:8}}>
-                <span style={{fontFamily:FF}}>{_EM.FOLDER} {f}</span>
+                <span style={{fontFamily:FF}}>\uD83D\uDCC1 {f}</span>
                 <Btn small variant="danger" onClick={()=>update("noteFolders",(data.noteFolders||[]).filter(x=>x!==f))}>✕</Btn>
               </div>
             ))}
@@ -974,12 +941,12 @@ function RecipesSection({data,update}) {
           {r.link&&(
             <a href={r.link.startsWith("http")?r.link:`https://${r.link}`} target="_blank" rel="noreferrer"
               style={{display:"inline-flex",alignItems:"center",gap:6,marginBottom:16,padding:"8px 14px",background:`${p.a3}30`,borderRadius:10,color:p.a1,textDecoration:"none",fontSize:13,fontWeight:700,fontFamily:FF}}>
-              {_EM.LINK} View Original Recipe {_EM.UPARROW}
+              \uD83D\uDD17 View Original Recipe \u2197
             </a>
           )}
-          <h4 style={{color:p.a2,fontFamily:AF,marginBottom:8}}>{String.fromCodePoint(0x1F9FE)} Ingredients</h4>
+          <h4 style={{color:p.a2,fontFamily:AF,marginBottom:8}}>\uD83E\uDDFE Ingredients</h4>
           <div style={{whiteSpace:"pre-wrap",fontSize:14,lineHeight:1.9,background:p.soft,borderRadius:10,padding:14,marginBottom:16,fontFamily:FF}}>{r.ingredients}</div>
-          <h4 style={{color:p.a2,fontFamily:AF,marginBottom:8}}>{String.fromCodePoint(0x1F469)}{_EM.COOKING} Instructions</h4>
+          <h4 style={{color:p.a2,fontFamily:AF,marginBottom:8}}>\uD83D\uDC69\uD83C\uDF73 Instructions</h4>
           <div style={{whiteSpace:"pre-wrap",fontSize:14,lineHeight:1.9,background:p.soft,borderRadius:10,padding:14,fontFamily:FF}}>{r.steps}</div>
           <Btn variant="danger" small style={{marginTop:16}} onClick={()=>{update("recipes",data.recipes.filter(x=>x.id!==r.id));setSel(null);}}>Delete Recipe</Btn>
         </Card>
@@ -990,17 +957,17 @@ function RecipesSection({data,update}) {
   return (
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-        <SectionTitle>{_EM.COOKING} Recipes</SectionTitle>
+        <SectionTitle>\uD83C\uDF73 Recipes</SectionTitle>
         <Btn onClick={()=>setModal(true)}>+ Save Recipe</Btn>
       </div>
-      <Inp placeholder={String.fromCodePoint(0x1F50D)+" Search by name or tag…"} value={search} onChange={e=>setSearch(e.target.value)} style={{marginBottom:20}}/>
+      <Inp placeholder="\uD83D\uDD0D Search by name or tag…" value={search} onChange={e=>setSearch(e.target.value)} style={{marginBottom:20}}/>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",gap:14}}>
         {filtered.map(r=>(
           <Card key={r.id} onClick={()=>setSel(r.id)} style={{cursor:"pointer"}}>
-            <div style={{fontSize:40,marginBottom:10}}>{_EM.PLATE}</div>
+            <div style={{fontSize:40,marginBottom:10}}>\uD83C\uDF7D</div>
             <h4 style={{margin:"0 0 6px",fontFamily:AF,color:p.text}}>{r.title}</h4>
             {r.time&&<div style={{fontSize:12,color:p.muted,marginBottom:8,fontFamily:FF}}>⏱ {r.time}</div>}
-            {r.link&&<div style={{fontSize:11,color:p.a2,marginBottom:8,fontFamily:FF}}>{_EM.LINK} Has source link</div>}
+            {r.link&&<div style={{fontSize:11,color:p.a2,marginBottom:8,fontFamily:FF}}>\uD83D\uDD17 Has source link</div>}
             <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
               {(r.tags||[]).map(t=><TagBadge key={t}>#{t}</TagBadge>)}
             </div>
@@ -1012,7 +979,7 @@ function RecipesSection({data,update}) {
         <FormCol>
           <Inp placeholder="Recipe name" value={form.title} onChange={e=>setForm(f=>({...f,title:e.target.value}))}/>
           <Inp placeholder="Cook time (e.g. 30 min)" value={form.time} onChange={e=>setForm(f=>({...f,time:e.target.value}))}/>
-          <Inp placeholder="" + _EM.LINK + " Link to online recipe (optional)" value={form.link} onChange={e=>setForm(f=>({...f,link:e.target.value}))}/>
+          <Inp placeholder="\uD83D\uDD17 Link to online recipe (optional)" value={form.link} onChange={e=>setForm(f=>({...f,link:e.target.value}))}/>
           <TA placeholder="Ingredients (one per line)" value={form.ingredients} onChange={e=>setForm(f=>({...f,ingredients:e.target.value}))} style={{minHeight:90}}/>
           <TA placeholder="Steps / Instructions" value={form.steps} onChange={e=>setForm(f=>({...f,steps:e.target.value}))} style={{minHeight:110}}/>
           <Inp placeholder="Tags: easy, dinner, quick (comma separated)" value={form.tags} onChange={e=>setForm(f=>({...f,tags:e.target.value}))}/>
@@ -1054,7 +1021,7 @@ function FilesSection({data,update}) {
   return (
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-        <SectionTitle>{_EM.FOLDER} Files & Photos</SectionTitle>
+        <SectionTitle>\uD83D\uDCC1 Files & Photos</SectionTitle>
         <Btn onClick={()=>setModal(true)}>+ Add Item</Btn>
       </div>
 
@@ -1069,15 +1036,15 @@ function FilesSection({data,update}) {
             {f.dataUrl&&f.type==="photo" ? (
               <img src={f.dataUrl} alt={f.name} style={{width:"100%",height:90,objectFit:"cover",borderRadius:10,marginBottom:8,cursor:"pointer"}}/>
             ) : f.dataUrl&&f.type==="file" ? (
-              <div style={{fontSize:40,marginBottom:8}}>{_EM.DOC}</div>
+              <div style={{fontSize:40,marginBottom:8}}>\uD83D\uDCC4</div>
             ) : (
-              <div style={{fontSize:44,marginBottom:10}}>{f.type==="photo"?"" + _EM.PHOTOFRAME + "":"" + _EM.DOC + ""}</div>
+              <div style={{fontSize:44,marginBottom:10}}>{f.type==="photo"?"\uD83D\uDDBC":"\uD83D\uDCC4"}</div>
             )}
             <div style={{fontWeight:700,fontSize:12,marginBottom:6,wordBreak:"break-word",fontFamily:FF}}>{f.name}</div>
             {f.tag&&<TagBadge>{f.tag}</TagBadge>}
             <div style={{fontSize:10,color:p.muted,marginTop:8,fontFamily:FF}}>{f.date}</div>
             {f.dataUrl&&(
-              <a href={f.dataUrl} download={f.name} onClick={e=>e.stopPropagation()} style={{display:"block",marginTop:6,fontSize:11,color:p.a1,fontWeight:700,textDecoration:"none",fontFamily:FF}}>{_EM.DOWN} Download</a>
+              <a href={f.dataUrl} download={f.name} onClick={e=>e.stopPropagation()} style={{display:"block",marginTop:6,fontSize:11,color:p.a1,fontWeight:700,textDecoration:"none",fontFamily:FF}}>\u2B07 Download</a>
             )}
           </Card>
         ))}
@@ -1097,10 +1064,10 @@ function FilesSection({data,update}) {
             {form.dataUrl&&form.type==="photo" ? (
               <img src={form.dataUrl} alt="" style={{maxWidth:"100%",maxHeight:150,borderRadius:8,objectFit:"cover"}}/>
             ) : form.dataUrl ? (
-              <div style={{fontSize:13,color:p.a1}}>{_EM.DOC} {form.name} ready to upload</div>
+              <div style={{fontSize:13,color:p.a1}}>\uD83D\uDCC4 {form.name} ready to upload</div>
             ) : (
               <>
-                <div style={{fontSize:36,marginBottom:8}}>{_EM.FOLDER}</div>
+                <div style={{fontSize:36,marginBottom:8}}>\uD83D\uDCC1</div>
                 <div style={{fontSize:14,color:p.muted,fontFamily:FF}}>Click to choose a file or photo</div>
                 <div style={{fontSize:11,color:p.muted,marginTop:4,fontFamily:FF}}>Images, PDFs, documents — anything!</div>
               </>
@@ -1112,7 +1079,7 @@ function FilesSection({data,update}) {
           <div style={{display:"flex",gap:8}}>
             {["file","photo"].map(t=>(
               <div key={t} onClick={()=>setForm(f=>({...f,type:t}))} style={{flex:1,padding:10,borderRadius:10,cursor:"pointer",textAlign:"center",fontWeight:700,fontFamily:FF,background:form.type===t?p.a1:p.tag,color:form.type===t?"#fff":p.muted}}>
-                {t==="file"?"" + _EM.DOC + " File":"" + _EM.PHOTOFRAME + " Photo"}
+                {t==="file"?"\uD83D\uDCC4 File":"\uD83D\uDDBC Photo"}
               </div>
             ))}
           </div>
@@ -1137,7 +1104,7 @@ function LocationsSection({data,update}) {
   return (
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
-        <SectionTitle>{_EM.MAPPIN} Saved Locations</SectionTitle>
+        <SectionTitle>\uD83D\uDCCD Saved Locations</SectionTitle>
         <Btn onClick={()=>setModal(true)}>+ Add Location</Btn>
       </div>
       {cats.map(cat=>(
@@ -1150,10 +1117,10 @@ function LocationsSection({data,update}) {
                   <b style={{fontFamily:FF}}>{l.name}</b>
                   <button onClick={()=>update("locations",data.locations.filter(x=>x.id!==l.id))} style={{background:"none",border:"none",cursor:"pointer",color:p.muted}}>✕</button>
                 </div>
-                {l.address&&<div style={{fontSize:13,color:p.muted,marginBottom:3,fontFamily:FF}}>{_EM.MAPPIN} {l.address}</div>}
-                {l.phone&&<div style={{fontSize:13,color:p.muted,marginBottom:3,fontFamily:FF}}>{_EM.PHONE} {l.phone}</div>}
+                {l.address&&<div style={{fontSize:13,color:p.muted,marginBottom:3,fontFamily:FF}}>\uD83D\uDCCD {l.address}</div>}
+                {l.phone&&<div style={{fontSize:13,color:p.muted,marginBottom:3,fontFamily:FF}}>\uD83D\uDCDE {l.phone}</div>}
                 {l.notes&&<div style={{fontSize:13,color:p.text,fontStyle:"italic",marginTop:6,fontFamily:FF}}>"{l.notes}"</div>}
-                {l.address&&<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.address)}`} target="_blank" rel="noreferrer" style={{fontSize:12,color:p.a1,fontWeight:700,textDecoration:"none",display:"block",marginTop:10,fontFamily:FF}}>{_EM.MAP} Open in Maps →</a>}
+                {l.address&&<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.address)}`} target="_blank" rel="noreferrer" style={{fontSize:12,color:p.a1,fontWeight:700,textDecoration:"none",display:"block",marginTop:10,fontFamily:FF}}>\uD83D\uDDFA Open in Maps →</a>}
               </Card>
             ))}
           </div>
@@ -1189,7 +1156,7 @@ function BillsSection({data,update}) {
   return (
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-        <SectionTitle>{_EM.MONEY} Bills & Budget</SectionTitle>
+        <SectionTitle>\uD83D\uDCB8 Bills & Budget</SectionTitle>
         <Btn onClick={()=>setModal(true)}>+ Add Bill</Btn>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:12,marginBottom:24}}>
@@ -1211,7 +1178,7 @@ function BillsSection({data,update}) {
           <Card key={b.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 16px",opacity:b.paid?.65:1,borderLeft:`4px solid ${b.paid?p.a2:p.danger}`}}>
             <div>
               <div style={{fontWeight:700,fontFamily:FF,textDecoration:b.paid?"line-through":"none"}}>{b.name}</div>
-              <div style={{fontSize:12,color:p.muted,fontFamily:FF}}>Due day {b.due} · {b.category}{b.auto?" · {String.fromCodePoint(0x1F504)} Auto-pay":""}</div>
+              <div style={{fontSize:12,color:p.muted,fontFamily:FF}}>Due day {b.due} · {b.category}{b.auto?" · \uD83D\uDD04 Auto-pay":""}</div>
             </div>
             <div style={{display:"flex",gap:8,alignItems:"center"}}>
               <b style={{fontSize:16,fontFamily:AF}}>${b.amount}</b>
@@ -1272,9 +1239,9 @@ export default function App() {
         <div style={{padding:"22px 16px 16px",display:"flex",alignItems:"center",gap:10,borderBottom:`1px solid ${p.sidebarH}`}}>
           {sidebarOpen&&<div style={{flex:1,minWidth:0}}>
             <div style={{color:"#ede6f2",fontFamily:AF,fontSize:20,letterSpacing:.5}}>MomBase</div>
-            <div style={{color:`${p.a3}cc`,fontSize:11,marginTop:2,fontFamily:FF}}>your life, organized {_EM.FLOWER}</div>
+            <div style={{color:`${p.a3}cc`,fontSize:11,marginTop:2,fontFamily:FF}}>your life, organized \uD83C\uDF38</div>
           </div>}
-          <button onClick={()=>setSidebarOpen(o=>!o)} style={{background:"none",border:"none",color:`${p.a3}cc`,cursor:"pointer",fontSize:18,flexShrink:0,padding:4,lineHeight:1}}>{sidebarOpen?"◀":"" + _EM.PLAY + ""}</button>
+          <button onClick={()=>setSidebarOpen(o=>!o)} style={{background:"none",border:"none",color:`${p.a3}cc`,cursor:"pointer",fontSize:18,flexShrink:0,padding:4,lineHeight:1}}>{sidebarOpen?"◀":"\u25B6"}</button>
         </div>
 
         <nav style={{flex:1,paddingTop:10,overflowY:"auto"}}>
@@ -1296,7 +1263,7 @@ export default function App() {
         </nav>
 
         {sidebarOpen&&<div style={{padding:"12px 16px 20px",color:"#c4856a",fontSize:11,textAlign:"center",borderTop:`1px solid ${p.sidebarH}`,fontFamily:FF}}>
-          You're doing great today {_EM.HEART}
+          You're doing great today \uD83D\uDC9B
         </div>}
       </div>
 
