@@ -1,12 +1,45 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-/* ‚îÄ‚îÄ Google Font ‚îÄ‚îÄ */
+/* ── Encoding-safe emoji ── */
+const _EM = {
+  FLOWER: String.fromCodePoint(0x1f338),
+  HOUSE: String.fromCodePoint(0x1f3e1),
+  CALENDAR: String.fromCodePoint(0x1f4c5),
+  ALARM: String.fromCodePoint(0x23f0),
+  NOTES: String.fromCodePoint(0x1f4dd),
+  COOKING: String.fromCodePoint(0x1f373),
+  FOLDER: String.fromCodePoint(0x1f4c1),
+  MAPPIN: String.fromCodePoint(0x1f4cd),
+  MONEY: String.fromCodePoint(0x1f4b8),
+  HEART: String.fromCodePoint(0x1f49b),
+  LINK: String.fromCodePoint(0x1f517),
+  CAMERA: String.fromCodePoint(0x1f4f7),
+  PLATE: String.fromCodePoint(0x1f37d),
+  MAP: String.fromCodePoint(0x1f5fa),
+  PHONE: String.fromCodePoint(0x1f4de),
+  PUSHPIN: String.fromCodePoint(0x1f4cc),
+  BELL: String.fromCodePoint(0x1f514),
+  PARTY: String.fromCodePoint(0x1f389),
+  SPARKLE: String.fromCodePoint(0x2728),
+  EMAIL: String.fromCodePoint(0x1f4e7),
+  APPLE: String.fromCodePoint(0x1f34e),
+  PLAY: String.fromCodePoint(0x25b6),
+  DOWN: String.fromCodePoint(0x2b07),
+  UPARROW: String.fromCodePoint(0x2197),
+  DOC: String.fromCodePoint(0x1f4c4),
+  PHOTOFRAME: String.fromCodePoint(0x1f5bc),
+  PENCIL: String.fromCodePoint(0x270f),
+  LEAF: String.fromCodePoint(0x1f33f),
+};
+
+
+/* ── Google Font ── */
 const fontLink = document.createElement("link");
 fontLink.href = "https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap";
 fontLink.rel = "stylesheet";
 document.head.appendChild(fontLink);
 
-/* ‚îÄ‚îÄ Palette ‚îÄ‚îÄ */
+/* ── Palette ── */
 const p = {
   bg:        "#f9f4fb",
   card:      "#ffffff",
@@ -26,13 +59,13 @@ const p = {
 };
 
 const SECTIONS = ["Dashboard","Calendar","Alarms","Notes","Recipes","Files","Locations","Bills"];
-const ICONS    = {Dashboard:"üè°",Calendar:"üìÖ",Alarms:"‚è∞",Notes:"üìù",Recipes:"üç≥",Files:"üìÅ",Locations:"üìç",Bills:"üí∏"};
+const ICONS    = {Dashboard:"" + _EM.HOUSE + "",Calendar:"" + _EM.CALENDAR + "",Alarms:"" + _EM.ALARM + "",Notes:"" + _EM.NOTES + "",Recipes:"" + _EM.COOKING + "",Files:"" + _EM.FOLDER + "",Locations:"" + _EM.MAPPIN + "",Bills:"" + _EM.MONEY + ""};
 const DAYS     = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const MONTHS   = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const NOTE_COLORS = ["#fff8e1","#fce4ec","#e8f5e9","#e3f2fd","#f3e5f5","#fff3e0"];
 const CAT_COLORS  = { Health:"#fdecea", Shopping:"#e8f5e9", Fun:"#e3f2fd", School:"#fffde7", Other:"#f3e5f5" };
 
-/* ‚îÄ‚îÄ Alarm Sounds (Web Audio API chimes) ‚îÄ‚îÄ */
+/* ── Alarm Sounds (Web Audio API chimes) ── */
 const ALARM_SOUNDS = [
   { id:"chime1",  label:"Gentle Chime" },
   { id:"chime2",  label:"Bell Tower" },
@@ -67,7 +100,7 @@ function playChime(id) {
   } catch(e) {}
 }
 
-/* ‚îÄ‚îÄ Default Data ‚îÄ‚îÄ */
+/* ── Default Data ── */
 const DEFAULT_DATA = {
   events: [
     {id:1,title:"School pickup",date:"2026-03-10",time:"15:00",color:"#9b3d12",desc:""},
@@ -79,19 +112,19 @@ const DEFAULT_DATA = {
   ],
   notes: [
     {id:1,title:"School supply list",content:"Glue sticks, markers, composition notebook, scissors",color:"#fff8e1",pinned:true,date:"2026-02-28",folder:"School",photos:[],links:[]},
-    {id:2,title:"Self-care reminder",content:"You are doing amazing. Rest is productive. ‚ú®",color:"#fce4ec",pinned:true,date:"2026-03-01",folder:"Personal",photos:[],links:[]},
+    {id:2,title:"Self-care reminder",content:"You are doing amazing. Rest is productive. " + _EM.SPARKLE + "",color:"#fce4ec",pinned:true,date:"2026-03-01",folder:"Personal",photos:[],links:[]},
   ],
   noteFolders: ["Personal","School","Household","Health"],
   recipes: [
-    {id:1,title:"One-Pot Pasta",ingredients:"Pasta\nCanned tomatoes\nGarlic\nBasil\nOlive oil",steps:"1. Boil pasta.\n2. Saut√© garlic.\n3. Add tomatoes.\n4. Combine & top with basil.",tags:["easy","dinner"],time:"20 min",link:""},
-    {id:2,title:"Sheet Pan Chicken",ingredients:"Chicken thighs\nPotatoes\nBroccoli\nOlive oil\nHerbs",steps:"1. Preheat 425¬∞F.\n2. Toss in oil & seasoning.\n3. Roast 35 min.",tags:["dinner","meal prep"],time:"40 min",link:""},
+    {id:1,title:"One-Pot Pasta",ingredients:"Pasta\nCanned tomatoes\nGarlic\nBasil\nOlive oil",steps:"1. Boil pasta.\n2. Sauté garlic.\n3. Add tomatoes.\n4. Combine & top with basil.",tags:["easy","dinner"],time:"20 min",link:""},
+    {id:2,title:"Sheet Pan Chicken",ingredients:"Chicken thighs\nPotatoes\nBroccoli\nOlive oil\nHerbs",steps:"1. Preheat 425°F.\n2. Toss in oil & seasoning.\n3. Roast 35 min.",tags:["dinner","meal prep"],time:"40 min",link:""},
   ],
   files: [
     {id:1,name:"Insurance card",type:"file",date:"2026-01-15",tag:"Health",dataUrl:null},
     {id:2,name:"Family photo Jan",type:"photo",date:"2026-01-20",tag:"Family",dataUrl:null},
   ],
   locations: [
-    {id:1,name:"Pediatrician",address:"123 Maple St",phone:"555-0101",notes:"Dr. Kim ‚Äî 2nd floor",category:"Health"},
+    {id:1,name:"Pediatrician",address:"123 Maple St",phone:"555-0101",notes:"Dr. Kim — 2nd floor",category:"Health"},
     {id:2,name:"Best Grocery Store",address:"456 Oak Ave",phone:"",notes:"Best produce, side parking",category:"Shopping"},
   ],
   bills: [
@@ -115,7 +148,7 @@ function useData() {
   return [data, update];
 }
 
-/* ‚îÄ‚îÄ Alarm ticker ‚îÄ‚îÄ */
+/* ── Alarm ticker ── */
 function useAlarmTicker(alarms) {
   const fired = useRef(new Set());
   useEffect(() => {
@@ -132,7 +165,7 @@ function useAlarmTicker(alarms) {
         fired.current.add(key);
         playChime(a.sound || "chime1");
         if (Notification.permission === "granted") {
-          new Notification("MomBase ‚è∞", { body: a.label });
+          new Notification("MomBase " + _EM.ALARM + "", { body: a.label });
         }
       });
     }, 10000);
@@ -140,7 +173,7 @@ function useAlarmTicker(alarms) {
   }, [alarms]);
 }
 
-/* ‚îÄ‚îÄ Shared UI ‚îÄ‚îÄ */
+/* ── Shared UI ── */
 const FF = "'Lato', sans-serif";
 const AF = "'Abril Fatface', serif";
 
@@ -212,7 +245,7 @@ const Modal = ({show,onClose,title,children,wide}) => {
       <div style={{background:p.card,borderRadius:20,padding:28,width:"100%",maxWidth:wide?680:500,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 16px 60px rgba(155,61,18,.25)"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:22}}>
           <h3 style={{margin:0,fontFamily:AF,color:p.a1,fontSize:20}}>{title}</h3>
-          <button onClick={onClose} style={{background:"none",border:"none",fontSize:24,cursor:"pointer",color:p.muted,lineHeight:1}}>√ó</button>
+          <button onClick={onClose} style={{background:"none",border:"none",fontSize:24,cursor:"pointer",color:p.muted,lineHeight:1}}>×</button>
         </div>
         {children}
       </div>
@@ -230,7 +263,7 @@ const TagBadge = ({children}) => (
   <span style={{background:p.tag,color:p.tagText,borderRadius:20,padding:"3px 10px",fontSize:11,fontWeight:700,fontFamily:FF,letterSpacing:.3}}>{children}</span>
 );
 
-/* ‚îÄ‚îÄ Dashboard ‚îÄ‚îÄ */
+/* ── Dashboard ── */
 function Dashboard({data}) {
   const today = new Date();
   const ts    = today.toISOString().slice(0,10);
@@ -245,7 +278,7 @@ function Dashboard({data}) {
   return (
     <div>
       <div style={{marginBottom:28}}>
-        <h1 style={{fontFamily:AF,margin:0,color:p.a1,fontSize:36}}>{greeting} üå∏</h1>
+        <h1 style={{fontFamily:AF,margin:0,color:p.a1,fontSize:36}}>{greeting} {_EM.FLOWER}</h1>
         <p style={{margin:"6px 0 0",color:p.muted,fontFamily:FF,fontSize:15}}>
           {today.toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"})}
         </p>
@@ -253,10 +286,10 @@ function Dashboard({data}) {
 
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(145px,1fr))",gap:14,marginBottom:28}}>
         {[
-          {l:"Today's Events",v:te.length,i:"üìÖ",bg:`${p.a1}15`},
-          {l:"Unpaid Bills",  v:ub.length,i:"üí∏",bg:`${p.a2}15`},
-          {l:"Alarms Today",  v:aa.length,i:"‚è∞",bg:`${p.a3}30`},
-          {l:"Pinned Notes",  v:pn.length,i:"üìå",bg:`${p.gold}20`},
+          {l:"Today's Events",v:te.length,i:"" + _EM.CALENDAR + "",bg:`${p.a1}15`},
+          {l:"Unpaid Bills",  v:ub.length,i:"" + _EM.MONEY + "",bg:`${p.a2}15`},
+          {l:"Alarms Today",  v:aa.length,i:"" + _EM.ALARM + "",bg:`${p.a3}30`},
+          {l:"Pinned Notes",  v:pn.length,i:"" + _EM.PUSHPIN + "",bg:`${p.gold}20`},
         ].map(s=>(
           <Card key={s.l} style={{background:s.bg,textAlign:"center",padding:"18px 10px",border:"none"}}>
             <div style={{fontSize:26}}>{s.i}</div>
@@ -268,18 +301,18 @@ function Dashboard({data}) {
 
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:16}}>
         <Card>
-          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>üìÖ Today's Schedule</div>
+          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>{_EM.CALENDAR} Today's Schedule</div>
           {te.length ? te.map(e=>(
             <div key={e.id} style={{display:"flex",gap:10,alignItems:"center",marginBottom:8}}>
               <div style={{width:10,height:10,borderRadius:"50%",background:e.color,flexShrink:0}}/>
               <b style={{fontSize:14,fontFamily:FF}}>{e.time}</b>
               <span style={{fontSize:14,color:p.muted}}>{e.title}</span>
             </div>
-          )) : <p style={{color:p.muted,fontSize:13,margin:0,fontStyle:"italic"}}>Free day ‚Äî enjoy it! üéâ</p>}
+          )) : <p style={{color:p.muted,fontSize:13,margin:0,fontStyle:"italic"}}>Free day — enjoy it! {_EM.PARTY}</p>}
         </Card>
 
         <Card>
-          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>‚è∞ Alarms Today</div>
+          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>{_EM.ALARM} Alarms Today</div>
           {aa.length ? aa.map(a=>(
             <div key={a.id} style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
               <span style={{fontSize:14}}>{a.label}</span>
@@ -289,18 +322,18 @@ function Dashboard({data}) {
         </Card>
 
         <Card>
-          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>üí∏ Bills to Pay</div>
+          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>{_EM.MONEY} Bills to Pay</div>
           {ub.slice(0,4).map(b=>(
             <div key={b.id} style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
               <span style={{fontSize:14}}>{b.name}</span>
-              <b style={{fontSize:14,color:p.danger}}>${b.amount} ¬∑ Day {b.due}</b>
+              <b style={{fontSize:14,color:p.danger}}>${b.amount} · Day {b.due}</b>
             </div>
           ))}
-          {!ub.length&&<p style={{color:p.muted,fontSize:13,margin:0,fontStyle:"italic"}}>All bills paid! üéâ</p>}
+          {!ub.length&&<p style={{color:p.muted,fontSize:13,margin:0,fontStyle:"italic"}}>All bills paid! {_EM.PARTY}</p>}
         </Card>
 
         <Card>
-          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>üìå Pinned Notes</div>
+          <div style={{fontFamily:AF,color:p.a1,marginBottom:12,fontSize:16}}>{_EM.PUSHPIN} Pinned Notes</div>
           {pn.slice(0,3).map(n=>(
             <div key={n.id} style={{background:n.color,borderRadius:10,padding:"8px 12px",marginBottom:8}}>
               <b style={{fontSize:13}}>{n.title}</b>
@@ -314,7 +347,7 @@ function Dashboard({data}) {
   );
 }
 
-/* ‚îÄ‚îÄ Calendar ‚îÄ‚îÄ */
+/* ── Calendar ── */
 function CalendarSection({data,update}) {
   const today = new Date();
   const [yr, setYr] = useState(today.getFullYear());
@@ -374,7 +407,7 @@ function CalendarSection({data,update}) {
     <div>
       {/* Header */}
       <div style={{display:"flex",flexWrap:"wrap",gap:10,justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
-        <SectionTitle>üìÖ Calendar</SectionTitle>
+        <SectionTitle>{_EM.CALENDAR} Calendar</SectionTitle>
         <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
           {["month","week","list"].map(v=>(
             <Pill key={v} active={view===v} onClick={()=>setView(v)}>{v.charAt(0).toUpperCase()+v.slice(1)}</Pill>
@@ -385,18 +418,18 @@ function CalendarSection({data,update}) {
 
       {/* Connect banners */}
       <Card style={{marginBottom:16,background:`${p.soft}`,border:`1px dashed ${p.a3}`,padding:"12px 16px"}}>
-        <div style={{fontSize:12,fontWeight:700,color:p.a1,marginBottom:8,fontFamily:AF}}>üîó Connect Your Calendars</div>
+        <div style={{fontSize:12,fontWeight:700,color:p.a1,marginBottom:8,fontFamily:AF}}>{_EM.LINK} Connect Your Calendars</div>
         <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
           {[
-            {name:"Google Calendar",url:GOOGLE_CAL,color:"#4285F4",icon:"üìÖ"},
-            {name:"Outlook",url:OUTLOOK_CAL,color:"#0078D4",icon:"üìß"},
-            {name:"Apple Calendar",url:"https://www.icloud.com/calendar",color:"#555",icon:"üçé"},
+            {name:"Google Calendar",url:GOOGLE_CAL,color:"#4285F4",icon:"" + _EM.CALENDAR + ""},
+            {name:"Outlook",url:OUTLOOK_CAL,color:"#0078D4",icon:"" + _EM.EMAIL + ""},
+            {name:"Apple Calendar",url:"https://www.icloud.com/calendar",color:"#555",icon:"" + _EM.APPLE + ""},
           ].map(cal=>(
             <a key={cal.name} href={cal.url} target="_blank" rel="noreferrer" style={{
               display:"inline-flex",alignItems:"center",gap:6,padding:"6px 14px",
               borderRadius:20,background:cal.color,color:"#fff",fontSize:12,
               fontWeight:700,textDecoration:"none",fontFamily:FF
-            }}>{cal.icon} {cal.name} ‚Üó</a>
+            }}>{cal.icon} {cal.name} {_EM.UPARROW}</a>
           ))}
         </div>
         <p style={{fontSize:11,color:p.muted,margin:"8px 0 0",fontFamily:FF}}>
@@ -406,9 +439,9 @@ function CalendarSection({data,update}) {
 
       {/* Nav */}
       <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16}}>
-        <button onClick={prev} style={{background:p.tag,border:"none",borderRadius:8,padding:"7px 16px",cursor:"pointer",fontSize:18,color:p.a1}}>‚Äπ</button>
+        <button onClick={prev} style={{background:p.tag,border:"none",borderRadius:8,padding:"7px 16px",cursor:"pointer",fontSize:18,color:p.a1}}>‹</button>
         <h3 style={{margin:0,fontFamily:AF,color:p.text,minWidth:200,textAlign:"center"}}>{MONTHS[mo]} {yr}</h3>
-        <button onClick={next} style={{background:p.tag,border:"none",borderRadius:8,padding:"7px 16px",cursor:"pointer",fontSize:18,color:p.a1}}>‚Ä∫</button>
+        <button onClick={next} style={{background:p.tag,border:"none",borderRadius:8,padding:"7px 16px",cursor:"pointer",fontSize:18,color:p.a1}}>›</button>
         <button onClick={()=>{setYr(today.getFullYear());setMo(today.getMonth());}} style={{background:"none",border:`1px solid ${p.border}`,borderRadius:8,padding:"6px 12px",cursor:"pointer",fontSize:12,color:p.muted,fontFamily:FF}}>Today</button>
       </div>
 
@@ -462,13 +495,13 @@ function CalendarSection({data,update}) {
                 <div style={{width:12,height:12,borderRadius:"50%",background:e.color,flexShrink:0}}/>
                 <div>
                   <b style={{fontFamily:FF}}>{e.title}</b>
-                  <div style={{fontSize:12,color:p.muted}}>{e.date}{e.time?` ¬∑ ${e.time}`:""}{e.location?` ¬∑ üìç${e.location}`:""}</div>
+                  <div style={{fontSize:12,color:p.muted}}>{e.date}{e.time?` · ${e.time}`:""}{e.location?` · " + _EM.MAPPIN + "${e.location}`:""}</div>
                   {e.desc&&<div style={{fontSize:12,color:p.muted,fontStyle:"italic"}}>{e.desc}</div>}
                 </div>
               </div>
               <div style={{display:"flex",gap:6}}>
                 <Btn small variant="soft" onClick={()=>openEdit(e)}>Edit</Btn>
-                <Btn small variant="danger" onClick={()=>del(e.id)}>‚úï</Btn>
+                <Btn small variant="danger" onClick={()=>del(e.id)}>✕</Btn>
               </div>
             </Card>
           ))}
@@ -525,14 +558,14 @@ function CalendarSection({data,update}) {
                 <div style={{width:10,height:10,borderRadius:"50%",background:e.color}}/>
                 <div>
                   <b style={{fontSize:14}}>{e.title}</b>
-                  {e.time&&<span style={{fontSize:12,color:p.muted,marginLeft:8}}>{e.time}{e.endTime?` ‚Äì ${e.endTime}`:""}</span>}
-                  {e.location&&<div style={{fontSize:12,color:p.muted}}>üìç {e.location}</div>}
+                  {e.time&&<span style={{fontSize:12,color:p.muted,marginLeft:8}}>{e.time}{e.endTime?` – ${e.endTime}`:""}</span>}
+                  {e.location&&<div style={{fontSize:12,color:p.muted}}>{_EM.MAPPIN} {e.location}</div>}
                   {e.desc&&<div style={{fontSize:12,color:p.muted,fontStyle:"italic"}}>{e.desc}</div>}
                 </div>
               </div>
               <div style={{display:"flex",gap:6}}>
                 <Btn small variant="soft" onClick={()=>openEdit(e)}>Edit</Btn>
-                <Btn small variant="danger" onClick={()=>del(e.id)}>‚úï</Btn>
+                <Btn small variant="danger" onClick={()=>del(e.id)}>✕</Btn>
               </div>
             </div>
           ))}
@@ -570,7 +603,7 @@ function CalendarSection({data,update}) {
   );
 }
 
-/* ‚îÄ‚îÄ Alarms ‚îÄ‚îÄ */
+/* ── Alarms ── */
 function AlarmsSection({data,update}) {
   useAlarmTicker(data.alarms);
   const [modal, setModal] = useState(false);
@@ -594,14 +627,14 @@ function AlarmsSection({data,update}) {
   return (
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
-        <SectionTitle>‚è∞ Alarms & Reminders</SectionTitle>
+        <SectionTitle>{_EM.ALARM} Alarms & Reminders</SectionTitle>
         <Btn onClick={()=>setModal(true)}>+ New Alarm</Btn>
       </div>
 
       {Notification.permission!=="granted"&&!permAsked&&(
         <Card style={{marginBottom:16,background:`${p.a3}25`,border:`1px dashed ${p.a3}`,padding:"12px 16px"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <span style={{fontSize:13,color:p.a1,fontFamily:FF}}>üîî Enable notifications so alarms can alert you even when you're not looking at the screen</span>
+            <span style={{fontSize:13,color:p.a1,fontFamily:FF}}>{_EM.BELL} Enable notifications so alarms can alert you even when you're not looking at the screen</span>
             <Btn small onClick={requestPerm}>Enable</Btn>
           </div>
         </Card>
@@ -613,7 +646,7 @@ function AlarmsSection({data,update}) {
             <div>
               <div style={{fontSize:34,fontWeight:700,fontFamily:AF,color:a.active?p.a1:p.muted,letterSpacing:1}}>{a.time}</div>
               <b style={{display:"block",marginBottom:6,fontFamily:FF}}>{a.label}</b>
-              <div style={{fontSize:11,color:p.muted,marginBottom:8}}>üîî {ALARM_SOUNDS.find(s=>s.id===a.sound)?.label||"Gentle Chime"}</div>
+              <div style={{fontSize:11,color:p.muted,marginBottom:8}}>{_EM.BELL} {ALARM_SOUNDS.find(s=>s.id===a.sound)?.label||"Gentle Chime"}</div>
               <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
                 {DAYS.map(d=>(
                   <span key={d} style={{fontSize:10,padding:"2px 8px",borderRadius:20,fontWeight:700,fontFamily:FF,background:a.days.includes(d)?p.a1:p.tag,color:a.days.includes(d)?"#fff":p.muted}}>{d}</span>
@@ -621,12 +654,12 @@ function AlarmsSection({data,update}) {
               </div>
             </div>
             <div style={{display:"flex",gap:10,alignItems:"center"}}>
-              <button onClick={()=>playChime(a.sound||"chime1")} style={{background:"none",border:`1px solid ${p.border}`,borderRadius:8,padding:"4px 10px",cursor:"pointer",fontSize:13,color:p.muted,fontFamily:FF}}>‚ñ∂ Test</button>
+              <button onClick={()=>playChime(a.sound||"chime1")} style={{background:"none",border:`1px solid ${p.border}`,borderRadius:8,padding:"4px 10px",cursor:"pointer",fontSize:13,color:p.muted,fontFamily:FF}}>{_EM.PLAY} Test</button>
               {/* Toggle */}
               <div onClick={()=>update("alarms",data.alarms.map(x=>x.id===a.id?{...x,active:!x.active}:x))} style={{width:52,height:28,borderRadius:14,background:a.active?p.a1:p.border,cursor:"pointer",position:"relative",transition:"background .2s",flexShrink:0}}>
                 <div style={{position:"absolute",top:4,left:a.active?28:4,width:20,height:20,borderRadius:"50%",background:"#fff",transition:"left .2s",boxShadow:"0 1px 4px rgba(0,0,0,.2)"}}/>
               </div>
-              <Btn small variant="danger" onClick={()=>update("alarms",data.alarms.filter(x=>x.id!==a.id))}>‚úï</Btn>
+              <Btn small variant="danger" onClick={()=>update("alarms",data.alarms.filter(x=>x.id!==a.id))}>✕</Btn>
             </div>
           </Card>
         ))}
@@ -651,7 +684,7 @@ function AlarmsSection({data,update}) {
                 <div key={s.id} style={{display:"flex",alignItems:"center",gap:10}}>
                   <div onClick={()=>setForm(f=>({...f,sound:s.id}))} style={{width:18,height:18,borderRadius:"50%",border:`2px solid ${p.a1}`,background:form.sound===s.id?p.a1:"transparent",cursor:"pointer",flexShrink:0}}/>
                   <span style={{fontSize:13,fontFamily:FF,flex:1}}>{s.label}</span>
-                  <button onClick={()=>playChime(s.id)} style={{background:"none",border:`1px solid ${p.border}`,borderRadius:6,padding:"3px 8px",cursor:"pointer",fontSize:12,color:p.muted,fontFamily:FF}}>‚ñ∂</button>
+                  <button onClick={()=>playChime(s.id)} style={{background:"none",border:`1px solid ${p.border}`,borderRadius:6,padding:"3px 8px",cursor:"pointer",fontSize:12,color:p.muted,fontFamily:FF}}>{_EM.PLAY}</button>
                 </div>
               ))}
             </div>
@@ -663,7 +696,7 @@ function AlarmsSection({data,update}) {
   );
 }
 
-/* ‚îÄ‚îÄ Notes ‚îÄ‚îÄ */
+/* ── Notes ── */
 function NotesSection({data,update}) {
   const [modal, setModal]     = useState(false);
   const [folderModal, setFolderModal] = useState(false);
@@ -742,9 +775,9 @@ function NotesSection({data,update}) {
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
           <b style={{fontSize:14,fontFamily:FF,flex:1,paddingRight:8}}>{note.title}</b>
           <div style={{display:"flex",gap:4,flexShrink:0}}>
-            {note.folder&&<span style={{fontSize:10,background:"rgba(0,0,0,.08)",borderRadius:10,padding:"2px 6px",fontFamily:FF,color:p.muted}}>üìÅ{note.folder}</span>}
-            <button onClick={()=>update("notes",data.notes.map(n=>n.id===note.id?{...n,pinned:!n.pinned}:n))} style={{background:"none",border:"none",cursor:"pointer",fontSize:14}}>{note.pinned?"üìå":"üìç"}</button>
-            <button onClick={()=>update("notes",data.notes.filter(n=>n.id!==note.id))} style={{background:"none",border:"none",cursor:"pointer",fontSize:14,color:p.muted}}>‚úï</button>
+            {note.folder&&<span style={{fontSize:10,background:"rgba(0,0,0,.08)",borderRadius:10,padding:"2px 6px",fontFamily:FF,color:p.muted}}>{_EM.FOLDER}{note.folder}</span>}
+            <button onClick={()=>update("notes",data.notes.map(n=>n.id===note.id?{...n,pinned:!n.pinned}:n))} style={{background:"none",border:"none",cursor:"pointer",fontSize:14}}>{note.pinned?"" + _EM.PUSHPIN + "":"" + _EM.MAPPIN + ""}</button>
+            <button onClick={()=>update("notes",data.notes.filter(n=>n.id!==note.id))} style={{background:"none",border:"none",cursor:"pointer",fontSize:14,color:p.muted}}>✕</button>
           </div>
         </div>
 
@@ -755,7 +788,7 @@ function NotesSection({data,update}) {
           </div>
         ) : (
           <div onClick={()=>setEditing(true)} style={{fontSize:13,lineHeight:1.6,cursor:"text",minHeight:32,color:p.text,fontFamily:FF}}>
-            {note.content||<i style={{color:p.muted}}>Click to edit‚Ä¶</i>}
+            {note.content||<i style={{color:p.muted}}>Click to edit…</i>}
           </div>
         )}
 
@@ -765,7 +798,7 @@ function NotesSection({data,update}) {
             {note.photos.map((ph,i)=>(
               <div key={i} style={{position:"relative"}}>
                 <img src={ph} alt="" style={{width:70,height:70,objectFit:"cover",borderRadius:8,border:`1px solid ${p.border}`}}/>
-                <button onClick={()=>update("notes",data.notes.map(n=>n.id===note.id?{...n,photos:n.photos.filter((_,j)=>j!==i)}:n))} style={{position:"absolute",top:-4,right:-4,background:p.danger,border:"none",borderRadius:"50%",width:16,height:16,cursor:"pointer",color:"#fff",fontSize:10,display:"flex",alignItems:"center",justifyContent:"center"}}>√ó</button>
+                <button onClick={()=>update("notes",data.notes.map(n=>n.id===note.id?{...n,photos:n.photos.filter((_,j)=>j!==i)}:n))} style={{position:"absolute",top:-4,right:-4,background:p.danger,border:"none",borderRadius:"50%",width:16,height:16,cursor:"pointer",color:"#fff",fontSize:10,display:"flex",alignItems:"center",justifyContent:"center"}}>×</button>
               </div>
             ))}
           </div>
@@ -776,8 +809,8 @@ function NotesSection({data,update}) {
           <div style={{display:"flex",flexDirection:"column",gap:4}}>
             {note.links.map((lk,i)=>(
               <div key={i} style={{display:"flex",alignItems:"center",gap:6}}>
-                <a href={lk.startsWith("http")?lk:`https://${lk}`} target="_blank" rel="noreferrer" style={{fontSize:12,color:p.a2,textDecoration:"none",flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>üîó {lk}</a>
-                <button onClick={()=>update("notes",data.notes.map(n=>n.id===note.id?{...n,links:n.links.filter((_,j)=>j!==i)}:n))} style={{background:"none",border:"none",cursor:"pointer",color:p.muted,fontSize:12}}>‚úï</button>
+                <a href={lk.startsWith("http")?lk:`https://${lk}`} target="_blank" rel="noreferrer" style={{fontSize:12,color:p.a2,textDecoration:"none",flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{_EM.LINK} {lk}</a>
+                <button onClick={()=>update("notes",data.notes.map(n=>n.id===note.id?{...n,links:n.links.filter((_,j)=>j!==i)}:n))} style={{background:"none",border:"none",cursor:"pointer",color:p.muted,fontSize:12}}>✕</button>
               </div>
             ))}
           </div>
@@ -785,9 +818,9 @@ function NotesSection({data,update}) {
 
         {/* Action bar */}
         <div style={{display:"flex",gap:6,flexWrap:"wrap",borderTop:`1px solid rgba(0,0,0,.06)`,paddingTop:8}}>
-          <button onClick={()=>notePhotoRef.current?.click()} style={{background:"rgba(255,255,255,.6)",border:`1px solid ${p.border}`,borderRadius:6,padding:"3px 8px",cursor:"pointer",fontSize:11,color:p.muted,fontFamily:FF}}>üì∑ Photo</button>
+          <button onClick={()=>notePhotoRef.current?.click()} style={{background:"rgba(255,255,255,.6)",border:`1px solid ${p.border}`,borderRadius:6,padding:"3px 8px",cursor:"pointer",fontSize:11,color:p.muted,fontFamily:FF}}>{_EM.CAMERA} Photo</button>
           <input ref={notePhotoRef} type="file" accept="image/*" style={{display:"none"}} onChange={addNotePhoto}/>
-          <button onClick={()=>setAddingLink(a=>!a)} style={{background:"rgba(255,255,255,.6)",border:`1px solid ${p.border}`,borderRadius:6,padding:"3px 8px",cursor:"pointer",fontSize:11,color:p.muted,fontFamily:FF}}>üîó Link</button>
+          <button onClick={()=>setAddingLink(a=>!a)} style={{background:"rgba(255,255,255,.6)",border:`1px solid ${p.border}`,borderRadius:6,padding:"3px 8px",cursor:"pointer",fontSize:11,color:p.muted,fontFamily:FF}}>{_EM.LINK} Link</button>
         </div>
 
         {addingLink&&(
@@ -805,14 +838,14 @@ function NotesSection({data,update}) {
   return (
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-        <SectionTitle>üìù Notes</SectionTitle>
+        <SectionTitle>{_EM.NOTES} Notes</SectionTitle>
         <div style={{display:"flex",gap:8}}>
-          <Btn small variant="soft" onClick={()=>setFolderModal(true)}>üìÅ Folders</Btn>
+          <Btn small variant="soft" onClick={()=>setFolderModal(true)}>{_EM.FOLDER} Folders</Btn>
           <Btn small onClick={()=>setModal(true)}>+ Note</Btn>
         </div>
       </div>
 
-      <Inp placeholder="üîç Search notes‚Ä¶" value={search} onChange={e=>setSearch(e.target.value)} style={{marginBottom:14}}/>
+      <Inp placeholder={String.fromCodePoint(0x1F50D)+" Search notes…"} value={search} onChange={e=>setSearch(e.target.value)} style={{marginBottom:14}}/>
 
       {/* Folder tabs */}
       <div style={{display:"flex",gap:8,marginBottom:20,flexWrap:"wrap"}}>
@@ -820,7 +853,7 @@ function NotesSection({data,update}) {
       </div>
 
       {pinned.length>0&&<>
-        <div style={{fontSize:11,fontWeight:700,color:p.muted,marginBottom:8,textTransform:"uppercase",letterSpacing:1,fontFamily:FF}}>üìå Pinned</div>
+        <div style={{fontSize:11,fontWeight:700,color:p.muted,marginBottom:8,textTransform:"uppercase",letterSpacing:1,fontFamily:FF}}>{_EM.PUSHPIN} Pinned</div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",gap:12,marginBottom:20}}>
           {pinned.map(n=><NoteCard key={n.id} note={n}/>)}
         </div>
@@ -836,10 +869,10 @@ function NotesSection({data,update}) {
       <Modal show={modal} onClose={()=>setModal(false)} title="New Note" wide>
         <FormCol>
           <Inp placeholder="Title" value={form.title} onChange={e=>setForm(f=>({...f,title:e.target.value}))}/>
-          <TA placeholder="Write your note‚Ä¶" value={form.content} onChange={e=>setForm(f=>({...f,content:e.target.value}))} style={{minHeight:120}}/>
+          <TA placeholder="Write your note…" value={form.content} onChange={e=>setForm(f=>({...f,content:e.target.value}))} style={{minHeight:120}}/>
 
           <Sel value={form.folder||""} onChange={e=>setForm(f=>({...f,folder:e.target.value}))}>
-            <option value="">üìÅ No folder</option>
+            <option value="">{_EM.FOLDER} No folder</option>
             {(data.noteFolders||[]).map(f=><option key={f} value={f}>{f}</option>)}
           </Sel>
 
@@ -855,7 +888,7 @@ function NotesSection({data,update}) {
               {(form.photos||[]).map((ph,i)=>(
                 <div key={i} style={{position:"relative"}}>
                   <img src={ph} alt="" style={{width:60,height:60,objectFit:"cover",borderRadius:8}}/>
-                  <button onClick={()=>setForm(f=>({...f,photos:f.photos.filter((_,j)=>j!==i)}))} style={{position:"absolute",top:-4,right:-4,background:p.danger,border:"none",borderRadius:"50%",width:16,height:16,cursor:"pointer",color:"#fff",fontSize:10}}>√ó</button>
+                  <button onClick={()=>setForm(f=>({...f,photos:f.photos.filter((_,j)=>j!==i)}))} style={{position:"absolute",top:-4,right:-4,background:p.danger,border:"none",borderRadius:"50%",width:16,height:16,cursor:"pointer",color:"#fff",fontSize:10}}>×</button>
                 </div>
               ))}
               <button onClick={()=>photoRef.current?.click()} style={{width:60,height:60,borderRadius:8,border:`2px dashed ${p.border}`,background:"transparent",cursor:"pointer",fontSize:22,color:p.muted,display:"flex",alignItems:"center",justifyContent:"center"}}>+</button>
@@ -868,8 +901,8 @@ function NotesSection({data,update}) {
             <div style={{fontSize:13,color:p.muted,marginBottom:6,fontFamily:FF}}>Links:</div>
             {(form.links||[]).map((lk,i)=>(
               <div key={i} style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
-                <span style={{fontSize:12,color:p.a2,flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>üîó {lk}</span>
-                <button onClick={()=>setForm(f=>({...f,links:f.links.filter((_,j)=>j!==i)}))} style={{background:"none",border:"none",cursor:"pointer",color:p.muted}}>‚úï</button>
+                <span style={{fontSize:12,color:p.a2,flex:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{_EM.LINK} {lk}</span>
+                <button onClick={()=>setForm(f=>({...f,links:f.links.filter((_,j)=>j!==i)}))} style={{background:"none",border:"none",cursor:"pointer",color:p.muted}}>✕</button>
               </div>
             ))}
             <div style={{display:"flex",gap:8}}>
@@ -880,7 +913,7 @@ function NotesSection({data,update}) {
 
           <label style={{display:"flex",gap:8,alignItems:"center",cursor:"pointer",fontSize:14,fontFamily:FF}}>
             <input type="checkbox" checked={form.pinned} onChange={e=>setForm(f=>({...f,pinned:e.target.checked}))}/>
-            üìå Pin this note
+            {_EM.PUSHPIN} Pin this note
           </label>
           <Btn onClick={add}>Save Note</Btn>
         </FormCol>
@@ -892,13 +925,13 @@ function NotesSection({data,update}) {
           <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:8}}>
             {(data.noteFolders||[]).map(f=>(
               <div key={f} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 12px",background:p.soft,borderRadius:8}}>
-                <span style={{fontFamily:FF}}>üìÅ {f}</span>
-                <Btn small variant="danger" onClick={()=>update("noteFolders",(data.noteFolders||[]).filter(x=>x!==f))}>‚úï</Btn>
+                <span style={{fontFamily:FF}}>{_EM.FOLDER} {f}</span>
+                <Btn small variant="danger" onClick={()=>update("noteFolders",(data.noteFolders||[]).filter(x=>x!==f))}>✕</Btn>
               </div>
             ))}
           </div>
           <div style={{display:"flex",gap:8}}>
-            <Inp placeholder="New folder name‚Ä¶" value={newFolder} onChange={e=>setNewFolder(e.target.value)} style={{flex:1}}/>
+            <Inp placeholder="New folder name…" value={newFolder} onChange={e=>setNewFolder(e.target.value)} style={{flex:1}}/>
             <Btn onClick={addFolder}>Add</Btn>
           </div>
         </FormCol>
@@ -907,7 +940,7 @@ function NotesSection({data,update}) {
   );
 }
 
-/* ‚îÄ‚îÄ Recipes ‚îÄ‚îÄ */
+/* ── Recipes ── */
 function RecipesSection({data,update}) {
   const [modal, setModal] = useState(false);
   const [sel, setSel]     = useState(null);
@@ -931,22 +964,22 @@ function RecipesSection({data,update}) {
     if(!r){setSel(null);return null;}
     return (
       <div>
-        <Btn small variant="ghost" onClick={()=>setSel(null)} style={{marginBottom:16}}>‚Üê Back</Btn>
+        <Btn small variant="ghost" onClick={()=>setSel(null)} style={{marginBottom:16}}>← Back</Btn>
         <Card>
           <h2 style={{fontFamily:AF,color:p.a1,margin:"0 0 10px"}}>{r.title}</h2>
           <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:14}}>
-            {r.time&&<TagBadge>‚è± {r.time}</TagBadge>}
+            {r.time&&<TagBadge>⏱ {r.time}</TagBadge>}
             {(r.tags||[]).map(t=><TagBadge key={t}>#{t}</TagBadge>)}
           </div>
           {r.link&&(
             <a href={r.link.startsWith("http")?r.link:`https://${r.link}`} target="_blank" rel="noreferrer"
               style={{display:"inline-flex",alignItems:"center",gap:6,marginBottom:16,padding:"8px 14px",background:`${p.a3}30`,borderRadius:10,color:p.a1,textDecoration:"none",fontSize:13,fontWeight:700,fontFamily:FF}}>
-              üîó View Original Recipe ‚Üó
+              {_EM.LINK} View Original Recipe {_EM.UPARROW}
             </a>
           )}
-          <h4 style={{color:p.a2,fontFamily:AF,marginBottom:8}}>üßæ Ingredients</h4>
+          <h4 style={{color:p.a2,fontFamily:AF,marginBottom:8}}>{String.fromCodePoint(0x1F9FE)} Ingredients</h4>
           <div style={{whiteSpace:"pre-wrap",fontSize:14,lineHeight:1.9,background:p.soft,borderRadius:10,padding:14,marginBottom:16,fontFamily:FF}}>{r.ingredients}</div>
-          <h4 style={{color:p.a2,fontFamily:AF,marginBottom:8}}>üë©‚Äçüç≥ Instructions</h4>
+          <h4 style={{color:p.a2,fontFamily:AF,marginBottom:8}}>{String.fromCodePoint(0x1F469)}{_EM.COOKING} Instructions</h4>
           <div style={{whiteSpace:"pre-wrap",fontSize:14,lineHeight:1.9,background:p.soft,borderRadius:10,padding:14,fontFamily:FF}}>{r.steps}</div>
           <Btn variant="danger" small style={{marginTop:16}} onClick={()=>{update("recipes",data.recipes.filter(x=>x.id!==r.id));setSel(null);}}>Delete Recipe</Btn>
         </Card>
@@ -957,17 +990,17 @@ function RecipesSection({data,update}) {
   return (
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-        <SectionTitle>üç≥ Recipes</SectionTitle>
+        <SectionTitle>{_EM.COOKING} Recipes</SectionTitle>
         <Btn onClick={()=>setModal(true)}>+ Save Recipe</Btn>
       </div>
-      <Inp placeholder="üîç Search by name or tag‚Ä¶" value={search} onChange={e=>setSearch(e.target.value)} style={{marginBottom:20}}/>
+      <Inp placeholder={String.fromCodePoint(0x1F50D)+" Search by name or tag…"} value={search} onChange={e=>setSearch(e.target.value)} style={{marginBottom:20}}/>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",gap:14}}>
         {filtered.map(r=>(
           <Card key={r.id} onClick={()=>setSel(r.id)} style={{cursor:"pointer"}}>
-            <div style={{fontSize:40,marginBottom:10}}>üçΩÔ∏è</div>
+            <div style={{fontSize:40,marginBottom:10}}>{_EM.PLATE}️</div>
             <h4 style={{margin:"0 0 6px",fontFamily:AF,color:p.text}}>{r.title}</h4>
-            {r.time&&<div style={{fontSize:12,color:p.muted,marginBottom:8,fontFamily:FF}}>‚è± {r.time}</div>}
-            {r.link&&<div style={{fontSize:11,color:p.a2,marginBottom:8,fontFamily:FF}}>üîó Has source link</div>}
+            {r.time&&<div style={{fontSize:12,color:p.muted,marginBottom:8,fontFamily:FF}}>⏱ {r.time}</div>}
+            {r.link&&<div style={{fontSize:11,color:p.a2,marginBottom:8,fontFamily:FF}}>{_EM.LINK} Has source link</div>}
             <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>
               {(r.tags||[]).map(t=><TagBadge key={t}>#{t}</TagBadge>)}
             </div>
@@ -979,7 +1012,7 @@ function RecipesSection({data,update}) {
         <FormCol>
           <Inp placeholder="Recipe name" value={form.title} onChange={e=>setForm(f=>({...f,title:e.target.value}))}/>
           <Inp placeholder="Cook time (e.g. 30 min)" value={form.time} onChange={e=>setForm(f=>({...f,time:e.target.value}))}/>
-          <Inp placeholder="üîó Link to online recipe (optional)" value={form.link} onChange={e=>setForm(f=>({...f,link:e.target.value}))}/>
+          <Inp placeholder="" + _EM.LINK + " Link to online recipe (optional)" value={form.link} onChange={e=>setForm(f=>({...f,link:e.target.value}))}/>
           <TA placeholder="Ingredients (one per line)" value={form.ingredients} onChange={e=>setForm(f=>({...f,ingredients:e.target.value}))} style={{minHeight:90}}/>
           <TA placeholder="Steps / Instructions" value={form.steps} onChange={e=>setForm(f=>({...f,steps:e.target.value}))} style={{minHeight:110}}/>
           <Inp placeholder="Tags: easy, dinner, quick (comma separated)" value={form.tags} onChange={e=>setForm(f=>({...f,tags:e.target.value}))}/>
@@ -990,7 +1023,7 @@ function RecipesSection({data,update}) {
   );
 }
 
-/* ‚îÄ‚îÄ Files & Photos ‚îÄ‚îÄ */
+/* ── Files & Photos ── */
 function FilesSection({data,update}) {
   const [modal, setModal] = useState(false);
   const [form, setForm]   = useState({name:"",type:"file",tag:"",dataUrl:null});
@@ -1021,7 +1054,7 @@ function FilesSection({data,update}) {
   return (
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-        <SectionTitle>üìÅ Files & Photos</SectionTitle>
+        <SectionTitle>{_EM.FOLDER} Files & Photos</SectionTitle>
         <Btn onClick={()=>setModal(true)}>+ Add Item</Btn>
       </div>
 
@@ -1032,19 +1065,19 @@ function FilesSection({data,update}) {
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(155px,1fr))",gap:12}}>
         {filtered.map(f=>(
           <Card key={f.id} style={{textAlign:"center",position:"relative",padding:14}} onClick={f.dataUrl?()=>setPreview(f):undefined}>
-            <button onClick={(e)=>{e.stopPropagation();update("files",data.files.filter(x=>x.id!==f.id));}} style={{position:"absolute",top:8,right:10,background:"none",border:"none",cursor:"pointer",color:p.muted,fontSize:16,zIndex:1}}>‚úï</button>
+            <button onClick={(e)=>{e.stopPropagation();update("files",data.files.filter(x=>x.id!==f.id));}} style={{position:"absolute",top:8,right:10,background:"none",border:"none",cursor:"pointer",color:p.muted,fontSize:16,zIndex:1}}>✕</button>
             {f.dataUrl&&f.type==="photo" ? (
               <img src={f.dataUrl} alt={f.name} style={{width:"100%",height:90,objectFit:"cover",borderRadius:10,marginBottom:8,cursor:"pointer"}}/>
             ) : f.dataUrl&&f.type==="file" ? (
-              <div style={{fontSize:40,marginBottom:8}}>üìÑ</div>
+              <div style={{fontSize:40,marginBottom:8}}>{_EM.DOC}</div>
             ) : (
-              <div style={{fontSize:44,marginBottom:10}}>{f.type==="photo"?"üñºÔ∏è":"üìÑ"}</div>
+              <div style={{fontSize:44,marginBottom:10}}>{f.type==="photo"?"" + _EM.PHOTOFRAME + "️":"" + _EM.DOC + ""}</div>
             )}
             <div style={{fontWeight:700,fontSize:12,marginBottom:6,wordBreak:"break-word",fontFamily:FF}}>{f.name}</div>
             {f.tag&&<TagBadge>{f.tag}</TagBadge>}
             <div style={{fontSize:10,color:p.muted,marginTop:8,fontFamily:FF}}>{f.date}</div>
             {f.dataUrl&&(
-              <a href={f.dataUrl} download={f.name} onClick={e=>e.stopPropagation()} style={{display:"block",marginTop:6,fontSize:11,color:p.a1,fontWeight:700,textDecoration:"none",fontFamily:FF}}>‚¨á Download</a>
+              <a href={f.dataUrl} download={f.name} onClick={e=>e.stopPropagation()} style={{display:"block",marginTop:6,fontSize:11,color:p.a1,fontWeight:700,textDecoration:"none",fontFamily:FF}}>{_EM.DOWN} Download</a>
             )}
           </Card>
         ))}
@@ -1064,12 +1097,12 @@ function FilesSection({data,update}) {
             {form.dataUrl&&form.type==="photo" ? (
               <img src={form.dataUrl} alt="" style={{maxWidth:"100%",maxHeight:150,borderRadius:8,objectFit:"cover"}}/>
             ) : form.dataUrl ? (
-              <div style={{fontSize:13,color:p.a1}}>üìÑ {form.name} ready to upload</div>
+              <div style={{fontSize:13,color:p.a1}}>{_EM.DOC} {form.name} ready to upload</div>
             ) : (
               <>
-                <div style={{fontSize:36,marginBottom:8}}>üìÅ</div>
+                <div style={{fontSize:36,marginBottom:8}}>{_EM.FOLDER}</div>
                 <div style={{fontSize:14,color:p.muted,fontFamily:FF}}>Click to choose a file or photo</div>
-                <div style={{fontSize:11,color:p.muted,marginTop:4,fontFamily:FF}}>Images, PDFs, documents ‚Äî anything!</div>
+                <div style={{fontSize:11,color:p.muted,marginTop:4,fontFamily:FF}}>Images, PDFs, documents — anything!</div>
               </>
             )}
           </div>
@@ -1079,11 +1112,11 @@ function FilesSection({data,update}) {
           <div style={{display:"flex",gap:8}}>
             {["file","photo"].map(t=>(
               <div key={t} onClick={()=>setForm(f=>({...f,type:t}))} style={{flex:1,padding:10,borderRadius:10,cursor:"pointer",textAlign:"center",fontWeight:700,fontFamily:FF,background:form.type===t?p.a1:p.tag,color:form.type===t?"#fff":p.muted}}>
-                {t==="file"?"üìÑ File":"üñºÔ∏è Photo"}
+                {t==="file"?"" + _EM.DOC + " File":"" + _EM.PHOTOFRAME + "️ Photo"}
               </div>
             ))}
           </div>
-          <Inp placeholder="Tag (Health, School, Insurance‚Ä¶)" value={form.tag} onChange={e=>setForm(f=>({...f,tag:e.target.value}))}/>
+          <Inp placeholder="Tag (Health, School, Insurance…)" value={form.tag} onChange={e=>setForm(f=>({...f,tag:e.target.value}))}/>
           <Btn onClick={add}>Add Item</Btn>
         </FormCol>
       </Modal>
@@ -1091,7 +1124,7 @@ function FilesSection({data,update}) {
   );
 }
 
-/* ‚îÄ‚îÄ Locations ‚îÄ‚îÄ */
+/* ── Locations ── */
 function LocationsSection({data,update}) {
   const [modal, setModal] = useState(false);
   const [form, setForm]   = useState({name:"",address:"",phone:"",notes:"",category:"Other"});
@@ -1104,7 +1137,7 @@ function LocationsSection({data,update}) {
   return (
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
-        <SectionTitle>üìç Saved Locations</SectionTitle>
+        <SectionTitle>{_EM.MAPPIN} Saved Locations</SectionTitle>
         <Btn onClick={()=>setModal(true)}>+ Add Location</Btn>
       </div>
       {cats.map(cat=>(
@@ -1115,12 +1148,12 @@ function LocationsSection({data,update}) {
               <Card key={l.id} style={{background:CAT_COLORS[cat]||"#f9f4fb"}}>
                 <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}>
                   <b style={{fontFamily:FF}}>{l.name}</b>
-                  <button onClick={()=>update("locations",data.locations.filter(x=>x.id!==l.id))} style={{background:"none",border:"none",cursor:"pointer",color:p.muted}}>‚úï</button>
+                  <button onClick={()=>update("locations",data.locations.filter(x=>x.id!==l.id))} style={{background:"none",border:"none",cursor:"pointer",color:p.muted}}>✕</button>
                 </div>
-                {l.address&&<div style={{fontSize:13,color:p.muted,marginBottom:3,fontFamily:FF}}>üìç {l.address}</div>}
-                {l.phone&&<div style={{fontSize:13,color:p.muted,marginBottom:3,fontFamily:FF}}>üìû {l.phone}</div>}
+                {l.address&&<div style={{fontSize:13,color:p.muted,marginBottom:3,fontFamily:FF}}>{_EM.MAPPIN} {l.address}</div>}
+                {l.phone&&<div style={{fontSize:13,color:p.muted,marginBottom:3,fontFamily:FF}}>{_EM.PHONE} {l.phone}</div>}
                 {l.notes&&<div style={{fontSize:13,color:p.text,fontStyle:"italic",marginTop:6,fontFamily:FF}}>"{l.notes}"</div>}
-                {l.address&&<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.address)}`} target="_blank" rel="noreferrer" style={{fontSize:12,color:p.a1,fontWeight:700,textDecoration:"none",display:"block",marginTop:10,fontFamily:FF}}>üó∫ Open in Maps ‚Üí</a>}
+                {l.address&&<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(l.address)}`} target="_blank" rel="noreferrer" style={{fontSize:12,color:p.a1,fontWeight:700,textDecoration:"none",display:"block",marginTop:10,fontFamily:FF}}>{_EM.MAP} Open in Maps →</a>}
               </Card>
             ))}
           </div>
@@ -1131,7 +1164,7 @@ function LocationsSection({data,update}) {
           <Inp placeholder="Place name" value={form.name} onChange={e=>setForm(f=>({...f,name:e.target.value}))}/>
           <Inp placeholder="Address" value={form.address} onChange={e=>setForm(f=>({...f,address:e.target.value}))}/>
           <Inp placeholder="Phone (optional)" value={form.phone} onChange={e=>setForm(f=>({...f,phone:e.target.value}))}/>
-          <TA placeholder="Notes (hours, parking, tips‚Ä¶)" value={form.notes} onChange={e=>setForm(f=>({...f,notes:e.target.value}))} style={{minHeight:70}}/>
+          <TA placeholder="Notes (hours, parking, tips…)" value={form.notes} onChange={e=>setForm(f=>({...f,notes:e.target.value}))} style={{minHeight:70}}/>
           <Sel value={form.category} onChange={e=>setForm(f=>({...f,category:e.target.value}))}>
             {["Health","Shopping","Fun","School","Other"].map(x=><option key={x}>{x}</option>)}
           </Sel>
@@ -1142,7 +1175,7 @@ function LocationsSection({data,update}) {
   );
 }
 
-/* ‚îÄ‚îÄ Bills ‚îÄ‚îÄ */
+/* ── Bills ── */
 function BillsSection({data,update}) {
   const [modal, setModal] = useState(false);
   const [form, setForm]   = useState({name:"",amount:"",due:"",auto:false,category:"Utilities"});
@@ -1156,7 +1189,7 @@ function BillsSection({data,update}) {
   return (
     <div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-        <SectionTitle>üí∏ Bills & Budget</SectionTitle>
+        <SectionTitle>{_EM.MONEY} Bills & Budget</SectionTitle>
         <Btn onClick={()=>setModal(true)}>+ Add Bill</Btn>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:12,marginBottom:24}}>
@@ -1178,12 +1211,12 @@ function BillsSection({data,update}) {
           <Card key={b.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 16px",opacity:b.paid?.65:1,borderLeft:`4px solid ${b.paid?p.a2:p.danger}`}}>
             <div>
               <div style={{fontWeight:700,fontFamily:FF,textDecoration:b.paid?"line-through":"none"}}>{b.name}</div>
-              <div style={{fontSize:12,color:p.muted,fontFamily:FF}}>Due day {b.due} ¬∑ {b.category}{b.auto?" ¬∑ üîÑ Auto-pay":""}</div>
+              <div style={{fontSize:12,color:p.muted,fontFamily:FF}}>Due day {b.due} · {b.category}{b.auto?" · {String.fromCodePoint(0x1F504)} Auto-pay":""}</div>
             </div>
             <div style={{display:"flex",gap:8,alignItems:"center"}}>
               <b style={{fontSize:16,fontFamily:AF}}>${b.amount}</b>
-              <Btn small variant={b.paid?"ghost":"red"} onClick={()=>update("bills",data.bills.map(x=>x.id===b.id?{...x,paid:!x.paid}:x))}>{b.paid?"Undo":"‚úì Paid"}</Btn>
-              <Btn small variant="danger" onClick={()=>update("bills",data.bills.filter(x=>x.id!==b.id))}>‚úï</Btn>
+              <Btn small variant={b.paid?"ghost":"red"} onClick={()=>update("bills",data.bills.map(x=>x.id===b.id?{...x,paid:!x.paid}:x))}>{b.paid?"Undo":"✓ Paid"}</Btn>
+              <Btn small variant="danger" onClick={()=>update("bills",data.bills.filter(x=>x.id!==b.id))}>✕</Btn>
             </div>
           </Card>
         ))}
@@ -1207,7 +1240,7 @@ function BillsSection({data,update}) {
   );
 }
 
-/* ‚îÄ‚îÄ App Shell ‚îÄ‚îÄ */
+/* ── App Shell ── */
 export default function App() {
   const [active, setActive] = useState("Dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -1239,9 +1272,9 @@ export default function App() {
         <div style={{padding:"22px 16px 16px",display:"flex",alignItems:"center",gap:10,borderBottom:`1px solid ${p.sidebarH}`}}>
           {sidebarOpen&&<div style={{flex:1,minWidth:0}}>
             <div style={{color:"#ede6f2",fontFamily:AF,fontSize:20,letterSpacing:.5}}>MomBase</div>
-            <div style={{color:`${p.a3}cc`,fontSize:11,marginTop:2,fontFamily:FF}}>your life, organized üå∏</div>
+            <div style={{color:`${p.a3}cc`,fontSize:11,marginTop:2,fontFamily:FF}}>your life, organized {_EM.FLOWER}</div>
           </div>}
-          <button onClick={()=>setSidebarOpen(o=>!o)} style={{background:"none",border:"none",color:`${p.a3}cc`,cursor:"pointer",fontSize:18,flexShrink:0,padding:4,lineHeight:1}}>{sidebarOpen?"‚óÄ":"‚ñ∂"}</button>
+          <button onClick={()=>setSidebarOpen(o=>!o)} style={{background:"none",border:"none",color:`${p.a3}cc`,cursor:"pointer",fontSize:18,flexShrink:0,padding:4,lineHeight:1}}>{sidebarOpen?"◀":"" + _EM.PLAY + ""}</button>
         </div>
 
         <nav style={{flex:1,paddingTop:10,overflowY:"auto"}}>
@@ -1263,7 +1296,7 @@ export default function App() {
         </nav>
 
         {sidebarOpen&&<div style={{padding:"12px 16px 20px",color:"#c4856a",fontSize:11,textAlign:"center",borderTop:`1px solid ${p.sidebarH}`,fontFamily:FF}}>
-          You're doing great today üíõ
+          You're doing great today {_EM.HEART}
         </div>}
       </div>
 
@@ -1274,4 +1307,3 @@ export default function App() {
     </div>
   );
 }
-
